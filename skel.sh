@@ -27,22 +27,3 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-###########SEE ALSO :
-##########
-##########
-##########
-# AUTHOR:  aliceQueelImpress
-# VERSION: 1.0
-# E-MAIL:  jdj17180@gmail.com
-# DATE:    2026-02-23

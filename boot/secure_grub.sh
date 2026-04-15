@@ -63,13 +63,3 @@ else
     echo -e  "\e[31mError : ✘ Failed to update GRUB.\e[0m"
     return 1
 fi
-
-###########SEE ALSO :
-##########
-##########
-##########
-# AUTHOR:  alice
-# VERSION: 1.0
-# E-MAIL:  jdj17180@gmail.com
-# DATE:    2026-02-23
-# ==============================================================================

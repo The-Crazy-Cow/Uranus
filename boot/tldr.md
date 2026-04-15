@@ -20,6 +20,16 @@
 #delete 'quiet' and 'splash' option in the linux line to see details instead of logo
 #
 #running in any run level : egg 3 multi-user: add 3 to the end of vmlinuz line : GRUB_CMDLINE_LINUX="quiet splash 3"
+
+
+
++-----------------------------------------------------------+
++        L O G S                                            +
++-----------------------------------------------------------+
+#/var/log/boot.logx files 
+
+
+
 +-----------------------------------------------------------+
 +        SECURITY :=> execute "secrub.sh" script            +
 +-----------------------------------------------------------+
