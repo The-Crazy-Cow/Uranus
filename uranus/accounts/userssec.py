@@ -1,29 +1,3 @@
-"""
-2026 April 15
-*************
-HIBISCUS PUBLIC LICENSE
-***********************
-
-This project was created by a human fueled by questionable decisions,
-excessive curiosity, and possibly poor life choices.
-
-The author explicitly disclaims all responsibility, sanity, coherence,
-and any expectation that this software is useful, functional, or even
-remotely a good idea.
-
-If it works: do not question it.  
-If it breaks: that was always the plan.  
-If it does something unexpected: congratulations, you've discovered a feature.
-
-No guarantees. No support. No regrets.  
-Proceed at your own risk… or don’t. Nobody is watching. Probably.
-
-***************************************************************
-
-this file provide tools to manage users since creation to delete
-
-"""
-
 import os,sys,time,subprocess,shutil
 
 from utils.UranusException import UserssecException
@@ -83,7 +57,6 @@ def visudo_c ():
     stdout,stderr=p.communicate()
     out = stderr.decode('utf-8')
     if len(out): raise UserssecException(out)
-
 
     pass
 

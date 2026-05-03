@@ -1,18 +1,30 @@
 1- Manage login console or gui check  /etc/issue;/etc/motd;/etc/issue.net (L102)
 
+# /etc/motd and /etc/issue.net
 2- /etc/motd is print after the login:ideal for communicate some information  and 
 /etc/issue.net is printing before the login:ideal for warinings (specially for ssh protocol)
 
 3- about the sshd config :Remove the hash mark (#) from the line. If the word none is listed, instead of the issue 
 .net file, change it to /etc/issue.net => "#banner none"  to  "banner /etc/issue.net"
 
+# /etc/login.defs
 4- check the file : /etc/login.defs == configuration file of user and groups mechanism
 
 .set the usmask to 0077 in /etc/login.defs and $ cd /home && chmod 0077 *
 
+# /etc/default/useradd 
+set useradd default configuration see MLH 89 and 91
+.to see conf : useradd -D
+
+# /etc/skel 
+for new user etc/skel is  copied to /home/new_user/
+
+# /etc/subuid and /etc/subgid
+
 +-----------------------------------------------------------+
-+  THE ROOT LOGIN CASE : S U D O
+#  THE ROOT LOGIN CASE : S U D O
 +-----------------------------------------------------------+
+
 !!!!prefer add file in etc/sudoers.d/ directory 
 
 7- by default the sudo timer = 5 minutes: sudo -k to reinitialise it or sudo -K
@@ -23,14 +35,14 @@ or Defaults:<user_name> timestamp_timeout=30 #define for an user
 
 8- sudo -l : check my rights in sudoers file
 
-#use sudo <cmd>  => can trace but with su - or sudo su - don't no exactly who connect as root and perform some actions
+# use sudo <cmd>  => can trace but with su - or sudo su - don't no exactly who connect as root and perform some actions
 
 #add the user to the wheel group and edit the /etc/sudoers file with visudo : %wheel ALL(ALL:ALL) ALL and check with visudo -c
 
-#you will see perharps %whell ALL (ALL:ALL) NOPASSWD:ALL : it's not recommanded => system not check the user identity with his password
+# you will see perharps %whell ALL (ALL:ALL) NOPASSWD:ALL : it's not recommanded => system not check the user identity with his password
 #before accord him root rights
 
-#to define alias
+# to define alias
 User_Alias #for user
 Runas_Alias  #for groups
 Host_Alias  #machines
@@ -38,7 +50,7 @@ Cmnd_Alias #command
 
 DEVS ALL = (ALL) !/bin/su  #forbiden the su command
 
-#recall use of visudo : -c : check ; -f specify path of the conf sudoers file (rarely use)
+# recall use of visudo : -c : check ; -f specify path of the conf sudoers file (rarely use)
 
 %wheel ALL (ALL:ALL) 
 note : usermod -aG wheel bob 
@@ -48,20 +60,21 @@ at the end : sudo passwd -l root #lock root account (add ! in the /etc/shadow li
 and check with : sudo -S root #it's really lock ? L = Lock and P = Password = actif
 
 ---------------------
-       forbidenns 
+#      forbidenns 
 ---------------------
 
 maggie ALL=(ALL) /bin/bash, /bin/zsh 
-#the use of sudoedit for prevent shell escape
+
+# the use of sudoedit for prevent shell escape
 franckl ALL=(ALL) /bin/vim /etc/file ; instead prefer ; franckl ALL=(ALL) sudoedit /etc/file
 alice ALL=(ALL:ALL) /usr/bin/systemctl status *
 be aware also with the use of cat,sed,awk,etc...
 
-perfer ------ myke ALL=(<username>:<group>) <specific path> -------------
+# perfer ------ myke ALL=(<username>:<group>) <specific path> -------------
 *prevent the ownershhip => myke and user and group rights on path
 
 +---------------------------------------------------------------------------+
-+                       USER AND GROUPS                                     +
+#                       USER AND GROUPS                                     +
 +---------------------------------------------------------------------------+
 IV- Be Aware of adduser : by default create user home with wide open 755 mask
 =>set in /etc/adduser.conf DIR_MODE=0700
@@ -73,13 +86,14 @@ IV- Be Aware of adduser : by default create user home with wide open 755 mask
 
 View user expiry account data : chage -l <username>
 
-+-----------------------
-    ecryptfs-utils
-+-----------------------
+# compromised password see MLH105n
 
++-----------------------
+#   ecryptfs-utils
++-----------------------
 
 
 +-----------------------------------------------------------+
-+                       SEE ALSO                            
+#                       SEE ALSO                            
 +-----------------------------------------------------------+
 L(106) => ubuntu case
