@@ -3,6 +3,28 @@ import shutil,os,gzip
 from enum import Enum
 from datetime import date
 
+class Color :
+    """colored the terminal io's op"""
+
+    RED = "\033[31m"
+    GREEN = "\033[32m"
+    RESET = "\033[0m"
+
+    @staticmethod
+    def _format_color (color:str,string)->str:
+        return f"{color}{string}{Color.RESET}"
+
+    @staticmethod
+    def format_red(string:str) ->str:
+        return Color._format_color(Color.RED,string)
+
+    @staticmethod
+    def format_green(string:str) ->str:
+        return Color._format_color(Color.GREEN,string)
+
+
+    
+
 
 class Color :
     """use terminal color"""
