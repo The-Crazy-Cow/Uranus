@@ -1,4 +1,5 @@
-from accounts.userssec import Mk_sudoers_file
+from tests.test_1_console import main
 
 
-Mk_sudoers_file("tests/kl")
+if __name__=='__main__':
+    main()
