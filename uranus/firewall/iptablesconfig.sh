@@ -53,6 +53,8 @@ BLOCK_ICMP_NUM "12"
 iptables -A INPUT -j DROP
 iptables -P INPUT DROP
 
+#persitence
+
 
 
 

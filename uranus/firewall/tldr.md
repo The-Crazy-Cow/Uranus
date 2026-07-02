@@ -1,9 +1,28 @@
++-----------------------------------------------------------+
++                  i p t a b l e s                          +
++-----------------------------------------------------------+
 
+iptables rules are processed in order, from top to bottom, any ACCEPT rules that come
+after that DROP or REJECT rule would have no effect
 
+# iptables -I INPUT 1 -i lo -j ACCEPT  # loopback interface
 
+# block all packets from the icmp prot => 123
 
+# block syn flags : iptables -t mangle -A PREROUTING -p tcp ! --syn -m conntrack --cstate NEW -j DROP
 
+# set default policy
+    iptables -P INPUT DROP
+    iptabless -P OUTPUT ACCEPT
+    iptables -P FORWARD DROP
 
+    iptables -F [-t <table>]
+    iptables  -X    [-t <table>] //del chain
+    iptables -Z
+
+# install packet : iptables-persistent for persistence of your conf
+    rules are setting under /etc/iptables*
+    - iptable-save 
 
 # see (L105)
 man -k monitor or man -k performance <=> apropos ....
