@@ -43,12 +43,14 @@ echo -e "\n\n
 #make backup
 echo -e "\e[34m[Backup]\e[0m backup of $linux_file...."
 backup_file="${linux_file}_$(date -I).back"
+
 #save rights
 cp -p "$linux_file" "$backup_file"
 echo -e "$(printf '#%.0s' {1..7}) backup made by ${0##*/} $(printf '#%.0s' {1..7})\n" | cat - "$backup_file" > "${backup_file}.tmp" && mv "${backup_file}.tmp" "$backup_file"
 
 if [ "$security_level" == "N" ]; then
     echo -e "\033[32m\nConfiguration of grub with maximal security (unrestricted mode )...\033[0m"
+    
     # make unsrestricted
     sed -i '0,/CLASS="/ s/\(CLASS="[^"]*\)"/\1 --unrestricted"/' "$linux_file"
 else
@@ -64,12 +66,3 @@ else
     return 1
 fi
 
-###########SEE ALSO :
-##########
-##########
-##########
-# AUTHOR:  alice
-# VERSION: 1.0
-# E-MAIL:  jdj17180@gmail.com
-# DATE:    2026-02-23
-# ==============================================================================
