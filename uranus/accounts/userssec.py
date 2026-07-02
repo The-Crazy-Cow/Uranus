@@ -3,6 +3,7 @@ import os,sys,time,subprocess,shutil
 from utils.UranusException import UserssecException
 from utils.UranusUtils import add_date_suffixe,Mk_backup
 
+
 def Mk_sudoers_file(sudoers_file):
     """Mk_sudoers_file - take a ready sudoers conf file 
          and put it in /etc/sudoers.d/ dir and check conf via
