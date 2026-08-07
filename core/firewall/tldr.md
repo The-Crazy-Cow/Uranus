@@ -1,57 +1,66 @@
-+-----------------------------------------------------------+
-+                  i p t a b l e s                          +
-+-----------------------------------------------------------+
+# firewall/iptables
 
-iptables rules are processed in order, from top to bottom, any ACCEPT rules that come
+- **/etc/iptables/** : configuration files directory
+
+- iptables rules are processed in order, from top to bottom, any ACCEPT rules that come
 after that DROP or REJECT rule would have no effect
 
-# iptables -I INPUT 1 -i lo -j ACCEPT  # loopback interface
+- diff: REJECT sends messages to the sender after blocking packets while DROP don't
+use DROP is important to make your host invisible; view the default DROP policy
 
-# block all packets from the icmp prot => 123
+- block icmp (port=123)
 
-# block syn flags : iptables -t mangle -A PREROUTING -p tcp ! --syn -m conntrack --cstate NEW -j DROP
+- tests with nmap scan ->(p133) or check in my **github project**
 
-# set default policy
-    iptables -P INPUT DROP
-    iptabless -P OUTPUT ACCEPT
-    iptables -P FORWARD DROP
+## persistence
+- install package **iptables-persistent** ->(p128)
+- **netfilter-persistent** : persistence service
 
-    iptables -F [-t <table>]
-    iptables  -X    [-t <table>] //del chain
-    iptables -Z
+```bash
+# do following or install iptables-persistent
+iptables-save > rules.v4
+cp -a rules.v4 /etc/iptables
 
-# install packet : iptables-persistent for persistence of your conf
-    rules are setting under /etc/iptables*
-    - iptable-save 
+# iptables -D : delete from runtime not /etc/iptables/*
+systemctl restart netfilter-persistent
 
-# see (L105)
-man -k monitor or man -k performance <=> apropos ....
+# save : require netfilter-persistent
+netfilter-persistent save
 
-+-----------------------------------------------------------+
-+                   SAR ( System Activity Reporter:L137)    +
-+-----------------------------------------------------------+
+```
 
-# package : sysstat
-by default the sar by sadc (System Activity Data Collector) utility uses data stored in utility in /var/log/sa/
+## **recall**: https://help.ubuntu.com/community/IptablesHowTo
 
-# in the /var/log/sa/
-saXX : binary files and sarXX : text file generated based on binary files (xx represent the day of the mount)
+```bash
+# useful options; support ip6tables 
+iptables -t mangle -L -v -n --line-numbers # print rules
+iptables -D INPUT 3 # delete rule 3
+iptables -t mangle -Z  # reset packet count
 
-sar -f /var/log/sa/sa15 #afficher un fichier specific
-sar -f /var/log/sa/sa15 -s 14:00:00 -e 15:30:00 #filter
-sar -A -f /var/log/sa/sa15 #pr
-sar 1 4 #intervall of and print  4 ; by default is 10 seconds
+# pass incoming packets from servers that our host requested a connection; support ip6tables
+iptables  -A INPUT -m conntrack --cstate ESTABLISHED,RELATED -j ACCEPT
 
-# config => set_sar.sh
-On a Debian-based distribution, modify 
-the file /etc/default/sysstat and set ENABLED="true" or sudo dpkg-reconfigure sysstat
+# open ssh port (22/2222); support ipv6tables
+iptables  -A INPUT -p tcp --dport ssh -j ACCEPT
 
-read /etc/sysstat/sysstat file for make any personnal conf 
-sysstat-summary.service calls /usr/lib/sysstat/sa2 script (man 8 sa2) generated the sarr rapport files and log ratation of 
-the current data stored directory => systemctl list-timers | grep sysstat-summary
+# allow icmp type 3; you will do the same for type 11,12; mitigate on others 0,8 and 5 ->(p123)
+iptables -A INPUT -m conntrack -p icmp --icmp-type 3 --cstate NEW,ESTABLISHED,RELATED -j ACCEPT
 
-systemctl enable sysstat
+# for icmpv6; you will do the same for type 2,3,4 - 128,129 - 130,131,132,143 - 134,135,136,141,142
+# - 148,149 - 151,152,153 ->(!p140)
+ip6tables -A INPUT -p icmpv6 --icmpv6-type 1 -j ACCEPT
 
-+-----------------------------------------------------------+
-+                       SEE ALSO                            +
-+-----------------------------------------------------------+
+# DROP rule; support ipv6tables
+iptables -A INPUT -j DROP
+
+# allow traffic on loopback interface; support ipv6tables 
+iptables  -I INPUT 1 -i lo -j ACCEPT  
+
+# blocking invalid packets; support ipv6tables 
+iptables -t mangle -A PREROUTING -m conntrack --cstate INVALID -j DROP
+iptables -t mangle -A PREROUTING -p tcp ! --syn -m conntrack --cstate NEW -j DROP
+
+# set default DROP policy; support ipv6tables
+iptables -p INPUT DROP
+
+```
